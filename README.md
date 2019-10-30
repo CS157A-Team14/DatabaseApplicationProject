@@ -1,7 +1,7 @@
 # Database Application Project
 
 
-##Team #14: </br>
+## Team 14: </br>
 Khoa Phan 
 Jing Hui 
 Renad Morrar. 
