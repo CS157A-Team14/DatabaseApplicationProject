@@ -19,5 +19,22 @@ Renad Morrar. </br>
 1. Go to the Git website or click [this link](https://git-scm.com/downloads) to download and install git.
 2. Choose a approriate version and click download. </br></br>
 
+**Clone the repository** </br>
+1. Open command promt (Windows) or terminal (MacOS) </br>
+2. type `git clone https://github.com/CS157A-Team14/DatabaseApplicationProject.git` </br>
+Click [this link](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) to see a detail information on how to clone a repo from Github to your computer. </br>
+
+**Set up Front-end/Client (React.JS)** </br>
+1. Open cmd/terminal </br>
+2. cd to ../client </br>
+3. npm install </br>
+4. npm start </br>
+
+**Set up Back-end/Server (Express.JS)** </br>
+1. Open cmd/terminal </br>
+2. cd to ../server </br>
+3. npm install </br>
+4. npm start </br>
+
 
 
