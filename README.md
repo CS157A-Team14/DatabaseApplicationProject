@@ -24,13 +24,13 @@ Renad Morrar. </br>
 2. type `git clone https://github.com/CS157A-Team14/DatabaseApplicationProject.git` </br>
 Click [this link](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) to see a detail information on how to clone a repo from Github to your computer. </br></br>
 
-**Set up Front-end/Client (React.JS)** </br></br>
+**Set up Front-end/Client (React.JS)** </br>
 1. Open cmd/terminal </br>
 2. cd to ../client </br>
 3. npm install </br>
-4. npm start </br>
+4. npm start </br></br>
 
-**Set up Back-end/Server (Express.JS)** </br></br>
+**Set up Back-end/Server (Express.JS)** </br>
 1. Open cmd/terminal </br>
 2. cd to ../server </br>
 3. npm install </br>
