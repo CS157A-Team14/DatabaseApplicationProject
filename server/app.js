@@ -12,6 +12,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/', require('./login'))
 
 
 const mysql = require('mysql')
@@ -24,12 +25,7 @@ const connection = mysql.createConnection({
     database: "list"
 })
 
-app.get('/home', (request ,response , next) => {
-  connection.query('SELECT * FROM product', function(err, result){
-    if(err) throw err
-    response.status(200).jsonp(result)
-  })
-})
+
 
 
 
