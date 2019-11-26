@@ -15,7 +15,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', require('./login'))
 
 
-
 const mysql = require('mysql')
 // use to connect database to nodejs.
 const connection = mysql.createConnection({
@@ -49,8 +48,6 @@ connection.connect(function(err) {
   });
   */
 });
-
-
 
 
 
