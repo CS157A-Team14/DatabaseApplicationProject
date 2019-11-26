@@ -12,26 +12,42 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/', require('./login'))
+
+
 const mysql = require('mysql')
 // use to connect database to nodejs.
 const connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: "root",
-    password: "root"
+    password: "password",
+    database: "IM"
 });
 
-
-
-app.get('/home', (request ,response , next) => {
+// connection message display
+connection.connect(function(err) {
+  if (err) {
+    console.error('error connecting: ' + err.stack);
+    return;
+  }
+  console.log('connected as id ' + connection.threadId);
+  // Error: ER_NOT_SUPPORTED_AUTH_MODE: Client does not support authentication protocol requested by server;
+  // Alter user privileges to support mysql native password so that app.js wont throw
+  // /usr/local/mysql/bin/mysql -u root -p
+  // ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password'
+  
   /*
-  connection.query('SELECT * FROM product', function(err, result){
-    if(err) throw err
-    response.status(200).jsonp(result)
-  })
+  SAMPLE MOCK QUERY: 
+  connection.query('SELECT * from Items', function (error, results, fields) {
+    if (error) {
+      console.log('Query resulted in error:', error);
+    } else {
+      console.log('Query response:', results);
+    }
+  });
   */
- response.status(200);
-})
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -49,4 +65,8 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+console.log('Listening on 3001')
+
 module.exports = app;
+
+
