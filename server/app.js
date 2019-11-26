@@ -12,26 +12,26 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-
 const mysql = require('mysql')
 // use to connect database to nodejs.
 const connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: "root",
-    password: "root",
-    database: "list"
-})
+    password: "root"
+});
+
+
 
 app.get('/home', (request ,response , next) => {
+  /*
   connection.query('SELECT * FROM product', function(err, result){
     if(err) throw err
     response.status(200).jsonp(result)
   })
+  */
+ response.status(200);
 })
-
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -49,8 +49,4 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-console.log('Listening on 3001')
-
 module.exports = app;
-
-
