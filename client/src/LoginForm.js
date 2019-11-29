@@ -1,11 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react'; // useState in React Hooks
+import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import {makeStyles} from '@material-ui/core/styles';
@@ -35,8 +32,25 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function LoginForm() {
-  const classes = useStyles();  
+export default function LoginForm(props) {
+  const classes = useStyles(); 
+  const [Id, setId] = useState("")
+  const [password, setPassword] = useState("")
+
+  const handleSubmit = e => {
+    e.preventDefault()
+    axios.post("/login", {Id, password}).then(response => {
+      if(response.data === "NO Account exists" ){
+        alert("ID or password is not correct")
+      } else {
+        // TODO: if user logins successfully, do 
+        axios.get("/product").then(response => {
+          console.log(response.data)
+        })
+        window.location.href = "/main"
+      }
+    })
+  }
   
   return (
     <Container component="main" maxWidth="xs">
@@ -45,7 +59,7 @@ export default function LoginForm() {
         <Typography component="h1" variant="h5">
           Log In
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={handleSubmit}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -56,7 +70,8 @@ export default function LoginForm() {
             name="id"
             autoComplete="Account ID"
             autoFocus 
-            
+            value={Id}
+            onChange={e => setId(e.target.value)}
           />
           <TextField
             variant="outlined"
@@ -68,11 +83,11 @@ export default function LoginForm() {
             type="password"
             id="password"
             autoComplete="current-password"
+            value={password}
+            onChange= {e => setPassword(e.target.value)}
+
           />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="black" />}
-            label="Remember me"
-          />
+          
           <Button
             type="submit"
             fullWidth
@@ -83,19 +98,6 @@ export default function LoginForm() {
             Log In
           </Button>
 
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2" >
-                Forgot password?
-              </Link>
-            </Grid>
-
-            <Grid item>
-              <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
         </form>
       </div>
       

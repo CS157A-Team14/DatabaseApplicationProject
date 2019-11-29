@@ -12,20 +12,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 app.use('/', require('./login'))
-
-
-const mysql = require('mysql')
-// use to connect database to nodejs.
-const connection = mysql.createConnection({
-    host: "localhost",
-    port: 3306,
-    user: "root",
-    password: "root",
-    database: "list"
-})
-
-
+app.use('/product', require('./product'))
 
 
 
