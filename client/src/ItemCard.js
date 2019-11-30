@@ -71,7 +71,8 @@ const StyledTableCell = withStyles(theme => ({
       },    
   }));
 
-export default function ItemCard(props) {    
+export default function ItemCard(props) {
+    const [olderVersion, setOlderVersion] = useState(undefined)    
     const [product, setProduct] = useState(undefined)
     const [pName, setPName] = useState('')
     const [quantity, setQuantity] = useState(1)
@@ -87,6 +88,7 @@ export default function ItemCard(props) {
             axios.get(`/product/getitem/${props.itemId}`).then(response => {
                 if(response.status === 200){
                     setProduct(response.data) // product : undefined => {}
+                    setOlderVersion(response.data)
                     const {pName, quantity, type, price} = response.data
                     setPName(pName)
                     setQuantity(quantity)
@@ -98,10 +100,13 @@ export default function ItemCard(props) {
     }, [product])
 
     const handleSubmit = () => {
-      const product = {pName, quantity, price, type}
+      const {pName: opName, quantity: oquantity, price: oprice, type: otype} = olderVersion
+      const whatUpdate = `${pName !== opName ? "Product name" : ""}${quantity !== oquantity ? ", quantity" : ""}${price !== oprice ? ", price" : ""}${type !== otype ? ", type" : ""}`
+      const product = {pName, quantity, price, type, whatUpdate}
       axios.put(`/product/update/${props.itemId}`, product).then(response => {
         alert("Successfully updated item")
         setProduct(undefined)
+        setOlderVersion(undefined)
       })
     }
 

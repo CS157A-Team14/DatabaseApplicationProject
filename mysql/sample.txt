@@ -1,0 +1,17 @@
+use project;
+
+/*account*/
+INSERT INTO account (userID, password, username) VALUES ('admin123','123456', 'Admin1');
+
+/*product*/
+INSERT INTO product (pName, quantity, price, type) VALUES ('Example 1',25, 3.50, 'school supply'),
+('Example 2',25, 3.50, 'school supply'),
+('Example 3',25, 3.50, 'school supply'),
+('Example 4',25, 3.50, 'school supply'),
+('Example 5',25, 3.50, 'school supply');
+
+INSERT INTO history (pId, pName, event, date) VALUES ('1','Example 1', 'Created', '11/28/2019'),
+('2','Example 2', 'Created', '11/28/2019'),
+('3','Example 3', 'Created', '11/28/2019'),
+('4','Example 4', 'Created', '11/28/2019'),
+('5','Example 5', 'Created', '11/28/2019');

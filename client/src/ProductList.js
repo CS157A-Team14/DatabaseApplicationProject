@@ -66,6 +66,11 @@ export default function ProductList() {
                     onClick={() => window.location.href=`/itemcard/${product.pId}` }
                 >
                                     Edit
+                </Button>  <span>&nbsp;&nbsp;</span>
+                <Button variant="contained" className={classes.button}
+                     onClick={() => window.location.href=`/itemhistory/${product.pId}` }
+                >
+                                    View History
                 </Button>  <span>&nbsp;&nbsp;</span>                
                 <IconButton aria-label="delete" onClick={() => handleDelete(product.pId)}>
                         <DeleteIcon />

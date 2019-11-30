@@ -35,10 +35,9 @@ router.get("/getitem/:id", (request, response) => {
     }
 })
         
-    // FOR ADMIN
-    // @router  POST api/products/add
-    // @desc    Add new item to products list
-    // @access private
+   
+    //   Add new item to products list
+   
     router.post("/add", (request, response) => {
         const {
             pName,
@@ -49,11 +48,26 @@ router.get("/getitem/:id", (request, response) => {
         if (pName && quantity && price && type) {
             connection.query("insert into product (pName, quantity, price, type) values (?, ?, ?, ?)", [pName, quantity, price, type],
             (err, results) => {
+                console.log(results)
                 if(err) {
                     // do something
                     response.status(500).send("Server error: " + err.message)
-                } else if(results){
-                    response.jsonp("success")
+                } else if(results && results.affectedRows > 0){
+                    const pId = results.insertId
+                    const now = new Date()
+                    connection.query("insert into history (pId, pName, event, date) values (?, ?, ?, ?)", 
+                        [pId, pName, "Created", `${now.getMonth() + 1}/${now.getDate()}/${now.getFullYear()}`], 
+                        (err, result) => {
+                        if(err) {
+                            // do something
+                            response.status(500).send("Server error: " + err.message)
+                        } else if(result){
+                            response.jsonp("success")
+                        } else {
+                            // bad response
+                            response.status(500).send("Server error")
+                        }
+                    })
                 } else {
                     // bad response
                     response.status(500).send("Server error")
@@ -63,16 +77,18 @@ router.get("/getitem/:id", (request, response) => {
             response.status(404).send("Bad request")
         }
     });
-    // @router  POST api/products/update
-    // @desc    Update an item
-    // @access private
+   
+   //Update an item
+   
     router.put("/update/:id", (request, response) => {
         var {
             pName,
             quantity,
             price,
-            type
+            type,
+            whatUpdate
         } = request.body
+        console.log(whatUpdate)
         if (request.params.id && pName && quantity && price && type) {
             connection.query("update product set pName=?, quantity=?, price=?, type=? where pId=?", 
             [pName, quantity, price, type, request.params.id],
@@ -81,7 +97,20 @@ router.get("/getitem/:id", (request, response) => {
                     // do something
                     response.status(500).send("Server error: " + err.message)
                 } else if(results){
-                    response.jsonp("success")
+                    const now = new Date()
+                    connection.query("insert into history (pId, pName, event, date) values (?, ?, ?, ?)", 
+                        [request.params.id, pName, `Updated ${whatUpdate}`, `${now.getMonth() + 1}/${now.getDate()}/${now.getFullYear()}`], 
+                        (err, result) => {
+                        if(err) {
+                            // do something
+                            response.status(500).send("Server error: " + err.message)
+                        } else if(result){
+                            response.jsonp("success")
+                        } else {
+                            // bad response
+                            response.status(500).send("Server error")
+                        }
+                    })
                 } else {
                     // bad response
                     response.status(500).send("Server error")
@@ -92,9 +121,8 @@ router.get("/getitem/:id", (request, response) => {
         }
     });
     
-    // @router DELETE "/delete/:product_id"
-    // @desc Delete a product with the product_id
-    // @access private
+    
+    // Delete a product  
     router.delete("/delete/:id", (request, response) => {
         if (request.params.id) {
             connection.query("delete from product where pId=?", 
@@ -114,6 +142,26 @@ router.get("/getitem/:id", (request, response) => {
             response.status(404).send("Bad request")
         }
     });
+
+    router.get("/gethistory/:id", (request, response) => {
+        if (request.params.id) {
+            connection.query("select * from history where pId=?", 
+            [request.params.id],
+            (err, results) => {
+                if(err) {
+                    // do something
+                    response.status(500).send("Server error: " + err.message)
+                } else if(results){
+                    response.jsonp(results)
+                } else {
+                    // bad response
+                    response.status(500).send("Server error")
+                }
+            })
+        } else {
+            response.status(404).send("Bad request")
+        }
+    })
     
 
   module.exports = router
