@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import ProductList from './ProductList'
 import ItemCard from './ItemCard';
 import ItemAdder from './ItemAdder';
+import SearchResult from './SearchResult';
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
       <Route path="/itemcard/:id" exact component={props => <NavBar><ItemCard itemId={props.match.params.id}/></NavBar>} />
       <Route path="/main" component={() => <NavBar><ProductList /></NavBar>} />
       <Route path="/add" component={() => <NavBar><ItemAdder /></NavBar>} />
+      <Route path="/search" component={() => <NavBar><SearchResult /></NavBar>} />
       <Route path="/itemhistory/:id" exact component={props => <NavBar><ItemHistory itemId={props.match.params.id}/></NavBar>} />
     </Router>
   );
