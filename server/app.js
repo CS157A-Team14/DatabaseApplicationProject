@@ -4,6 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+const search = require('./routes/search.js')
+
 var app = express();
 
 app.use(logger('dev'));
@@ -15,6 +17,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', require('./login'))
 app.use('/product', require('./product'))
+app.use('/search', search)
 
 
 
