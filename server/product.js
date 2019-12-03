@@ -2,6 +2,7 @@ var express = require("express")
 var router = express.Router()
 var connection = require('./mysqlconn');
 
+// /product
 router.get('/', (request ,response) => {
     connection.query("select * from product", (err, results) => {
         if(err) {
@@ -23,11 +24,11 @@ router.get("/getitem/:id", (request, response) => {
             if(err) {
                 // do something
                 response.status(500).send("Server error: " + err.message)
-            } else if(results){
+            } else if(results && results.length > 0){
                 response.jsonp(results[0])
             } else {
                 // bad response
-                response.status(500).send("Server error")
+                response.jsonp("Server error")
             }
         })
     } else {
@@ -37,7 +38,7 @@ router.get("/getitem/:id", (request, response) => {
         
    
     //   Add new item to products list
-   
+   // /product/add
     router.post("/add", (request, response) => {
         const {
             pName,
@@ -47,8 +48,7 @@ router.get("/getitem/:id", (request, response) => {
         } = request.body;
         if (pName && quantity && price && type) {
             connection.query("insert into product (pName, quantity, price, type) values (?, ?, ?, ?)", [pName, quantity, price, type],
-            (err, results) => {
-                console.log(results)
+            (err, results) => {                
                 if(err) {
                     // do something
                     response.status(500).send("Server error: " + err.message)
@@ -79,7 +79,7 @@ router.get("/getitem/:id", (request, response) => {
     });
    
    //Update an item
-   
+   // /product/update/:id
     router.put("/update/:id", (request, response) => {
         var {
             pName,
@@ -88,7 +88,6 @@ router.get("/getitem/:id", (request, response) => {
             type,
             whatUpdate
         } = request.body
-        console.log(whatUpdate)
         if (request.params.id && pName && quantity && price && type) {
             connection.query("update product set pName=?, quantity=?, price=?, type=? where pId=?", 
             [pName, quantity, price, type, request.params.id],
@@ -99,7 +98,7 @@ router.get("/getitem/:id", (request, response) => {
                 } else if(results){
                     const now = new Date()
                     connection.query("insert into history (pId, pName, event, date) values (?, ?, ?, ?)", 
-                        [request.params.id, pName, `Updated ${whatUpdate}`, `${now.getMonth() + 1}/${now.getDate()}/${now.getFullYear()}`], 
+                        [request.params.id, pName, `Updated: ${whatUpdate}`, `${now.getMonth() + 1}/${now.getDate()}/${now.getFullYear()}`], 
                         (err, result) => {
                         if(err) {
                             // do something
@@ -122,10 +121,12 @@ router.get("/getitem/:id", (request, response) => {
     });
     
     
-    // Delete a product  
+    // Delete a product 
+    // /product/delete/:id
+
     router.delete("/delete/:id", (request, response) => {
         if (request.params.id) {
-            connection.query("delete from product where pId=?", 
+            connection.query("delete from product where pId=?",
             [request.params.id],
             (err, results) => {
                 if(err) {
@@ -143,6 +144,9 @@ router.get("/getitem/:id", (request, response) => {
         }
     });
 
+    // view history
+    // /product/gethistory/:id
+    
     router.get("/gethistory/:id", (request, response) => {
         if (request.params.id) {
             connection.query("select * from history where pId=?", 
