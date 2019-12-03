@@ -106,12 +106,11 @@ export default function ItemCard(props) {
       const {pName: opName, quantity: oquantity, price: oprice, type: otype} = olderVersion
       const whatUpdate = `${pName !== opName ? " name" : ""}${quantity !== oquantity ? " quantity" : ""}${price !== oprice ? " price" : ""}${type !== otype ? " type" : ""}`
       const product = {pName, quantity, price, type, whatUpdate}
-      axios.put(`/product/update/${props.itemId}`, product).then(response => {
-        alert("Successfully updated item")
-        setProduct(undefined)
-        setOlderVersion(undefined)
-        window.location.href = "/main"
-      })
+      axios.put(`/product/update/${props.itemId}`, product)
+      alert("Successfully updated item")
+      setProduct(undefined)
+      setOlderVersion(undefined)
+      window.location.href = "/main"
     }
 
     return (
