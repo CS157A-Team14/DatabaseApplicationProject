@@ -42,7 +42,7 @@ const StyledTableCell = withStyles(theme => ({
       },
   }));
 
-export default function SearchResult() {
+export default function SearchResult(props) {
     const [products, setProducts] = useState(undefined)
 
     const handleDelete = id => {
@@ -98,7 +98,8 @@ export default function SearchResult() {
 
     useEffect(() => {
         if(!products){
-            axios.get("/product").then(response => {
+            console.log(props);
+            axios.get("/search").then(response => {
                 console.log(response.data)
                 if(response.status === 200){
                     setProducts(response.data)

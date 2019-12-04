@@ -4,8 +4,6 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-const search = require('./routes/search.js')
-
 var app = express();
 
 app.use(logger('dev'));
@@ -17,7 +15,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', require('./login'))
 app.use('/product', require('./product'))
-app.use('/search', search)
+app.use('/search',require('./search'))
 
 
 
@@ -40,5 +38,3 @@ app.use(function(err, req, res, next) {
 console.log('Listening on 3001')
 
 module.exports = app;
-
-

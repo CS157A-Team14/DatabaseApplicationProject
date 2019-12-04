@@ -6,6 +6,8 @@ import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import SearchResult from './SearchResult';
 
 
 const useStyles = makeStyles(theme => ({
@@ -34,6 +36,18 @@ const useStyles = makeStyles(theme => ({
         '&:hover': {
             backgroundColor: fade(theme.palette.common.white, 0.25),
         },
+        marginLeft: 0,
+        width: '100%',
+        [theme.breakpoints.up('sm')]: {
+            marginLeft: theme.spacing(1),
+            width: 'auto',
+        },
+    },
+    searchButton: {
+        position: 'relative',
+        borderRadius: theme.shape.borderRadius,
+        
+        color: 'white',
         marginLeft: 0,
         width: '100%',
         [theme.breakpoints.up('sm')]: {
@@ -73,6 +87,9 @@ export default function NavBar(props) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
 
+    const handleSearch = () => {
+    window.location.href = "/search"
+    };
 
     const handleClose = () => {
         setAnchorEl(null);
@@ -88,10 +105,15 @@ export default function NavBar(props) {
                     <Typography className={classes.title} variant="h6" noWrap>
                         ManageX
           </Typography>
+          
                     <div className={classes.search}>
-                        <div className={classes.searchIcon}>
+
+                    <IconButton aria-label="searchButton" onClick={handleSearch}>
+                        <div className={classes.searchButton}>
                             <SearchIcon />
                         </div>
+                        </IconButton> 
+
                         <InputBase
                             placeholder="Search…"
                             classes={{
