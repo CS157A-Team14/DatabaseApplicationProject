@@ -86,7 +86,7 @@ export default function ItemCard(props) {
     useEffect(() => {
         if(!product){
             axios.get(`/product/getitem/${props.itemId}`).then(response => {
-                if(response.status === 200){
+                if(response.data !== "Server error"){
                     setProduct(response.data) // product : undefined => {}
                     setOlderVersion(response.data)
                     const {pName, quantity, type, price} = response.data
@@ -94,6 +94,9 @@ export default function ItemCard(props) {
                     setQuantity(quantity)
                     setPrice(price)
                     setType(type)
+                } else {
+                  alert("Item is not accepted")
+                  window.location.href = "/main"
                 }
             })
         }
@@ -101,13 +104,13 @@ export default function ItemCard(props) {
 
     const handleSubmit = () => {
       const {pName: opName, quantity: oquantity, price: oprice, type: otype} = olderVersion
-      const whatUpdate = `${pName !== opName ? "Product name" : ""}${quantity !== oquantity ? ", quantity" : ""}${price !== oprice ? ", price" : ""}${type !== otype ? ", type" : ""}`
+      const whatUpdate = `${pName !== opName ? " name" : ""}${quantity !== oquantity ? " quantity" : ""}${price !== oprice ? " price" : ""}${type !== otype ? " type" : ""}`
       const product = {pName, quantity, price, type, whatUpdate}
-      axios.put(`/product/update/${props.itemId}`, product).then(response => {
-        alert("Successfully updated item")
-        setProduct(undefined)
-        setOlderVersion(undefined)
-      })
+      axios.put(`/product/update/${props.itemId}`, product)
+      alert("Successfully updated item")
+      setProduct(undefined)
+      setOlderVersion(undefined)
+      window.location.href = "/main"
     }
 
     return (

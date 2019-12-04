@@ -33,7 +33,14 @@ const StyledTableCell = withStyles(theme => ({
     
     },
     button: {
-        marginBottom: theme.spacing(1),    
+        marginBottom: theme.spacing(1),        
+        marginLeft: theme.spacing(1),
+        backgroundColor: theme.palette.common.black,
+        color: theme.palette.common.white,    
+      },
+    buttonnew: {
+        marginBottom: theme.spacing(1), 
+        marginLeft: theme.spacing(112),   
         backgroundColor: theme.palette.common.black,
         color: theme.palette.common.white,    
       },
@@ -44,10 +51,10 @@ const StyledTableCell = withStyles(theme => ({
 
 export default function ProductList() {
     const [products, setProducts] = useState(undefined)
+    const [sorted, setSorted] = useState(undefined)
 
     const handleDelete = id => {
         axios.delete(`/product/delete/${id}`).then(response => {
-            alert(response.data)
             setProducts(undefined)
         })
     }
@@ -82,15 +89,52 @@ export default function ProductList() {
     ))
 
     useEffect(() => {
-        if(!products){
+        if(!products && !sorted){
+            // Promise
             axios.get("/product").then(response => {
-                console.log(response.data)
                 if(response.status === 200){
                     setProducts(response.data)
                 }
             })
         }
-    }, [products])
+        if(!products && sorted){
+            setProducts(sorted)
+            setSorted(undefined)
+        }
+    }, [products, sorted])
+
+    const handleSortByName = () => {
+        var sorted = products
+        sorted.sort((a,b) => {
+            if(a.pName.toLowerCase() < b.pName.toLowerCase())
+                return -1
+            if(a.pName.toLowerCase() > b.pName.toLowerCase())    
+                return 1
+            return 0
+        })
+        setProducts(undefined)
+        setSorted(sorted)
+    }
+
+    const handleSortByPrice = () => {
+        var sorted = products
+        sorted.sort((a,b) => a.price - b.price)
+        setProducts(undefined)
+        setSorted(sorted)
+    }
+
+    const handleSortByType = () => {
+        var sorted = products
+        sorted.sort((a,b) => {
+            if(a.type.toLowerCase() < b.type.toLowerCase())
+                return -1
+            if(a.type.toLowerCase() > b.type.toLowerCase())    
+                return 1
+            return 0
+        })
+        setProducts(undefined)
+        setSorted(sorted)
+    }
 
     return (
         
@@ -100,11 +144,31 @@ export default function ProductList() {
                 products &&
                 <React.Fragment>
                     <div>
+                                              
+                        <h3>Sort by:</h3>
                         <Button variant="contained" className={classes.button}
+                            onClick={handleSortByName}
+                        >
+                            Name
+                        </Button>
+                        <Button variant="contained" className={classes.button}
+                            onClick={handleSortByPrice}
+                        >
+                            Price
+                        </Button>
+                        <Button variant="contained" className={classes.button}
+                            onClick={handleSortByType}
+                        >
+                            Type
+                        </Button>                       
+                        
+                        <Button variant="contained" className={classes.buttonnew}
                             onClick={() => window.location.href=`/add` }>
                             Add new item
-                        </Button>
+                        </Button> 
+                    
                     </div>
+                    
                     <Table className={classes.table} aria-label="customized table">
                         <TableHead>
                         <TableRow>

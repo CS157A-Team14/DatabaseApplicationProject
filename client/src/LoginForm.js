@@ -43,10 +43,7 @@ export default function LoginForm(props) {
       if(response.data === "NO Account exists" ){
         alert("ID or password is not correct")
       } else {
-        // TODO: if user logins successfully, do 
-        axios.get("/product").then(response => {
-          console.log(response.data)
-        })
+                
         window.location.href = "/main"
       }
     })
