@@ -7,11 +7,13 @@ import ProductList from './ProductList'
 import ItemCard from './ItemCard';
 import ItemAdder from './ItemAdder';
 import SearchResult from './SearchResult';
+import SignUpForm from './SignUpForm';
 
 export default function App() {
   return (
     <Router>
       <Route path="/" exact component={LoginForm} />
+      <Route path="/signup" exact component={SignUpForm} />
       <Route path="/itemcard/:id" exact component={props => <NavBar><ItemCard itemId={props.match.params.id}/></NavBar>} />
       <Route path="/main" component={() => <NavBar><ProductList /></NavBar>} />
       <Route path="/add" component={() => <NavBar><ItemAdder /></NavBar>} />

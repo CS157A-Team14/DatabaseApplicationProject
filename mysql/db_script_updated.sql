@@ -41,6 +41,7 @@ INSERT INTO `account` VALUES ('admin1','123456','Admin1'),('admin10','123456','A
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 
+
 --
 -- Table structure for table `employee`
 --

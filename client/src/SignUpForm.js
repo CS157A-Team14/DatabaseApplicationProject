@@ -6,7 +6,7 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import {makeStyles} from '@material-ui/core/styles';
-
+import connection from 'mysqlconn';
 
 const useStyles = makeStyles(theme => ({
   '@global': {
@@ -32,28 +32,35 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function LoginForm(props) {
-  const classes = useStyles(); 
-  const [Id, setId] = useState("")
-  const [password, setPassword] = useState("")
+export default function SignUpForm(props) {
 
-  const handleSubmit = e => {
-    e.preventDefault()
-    axios.post("/login", {Id, password}).then(response => {
-      if(response.data === "NO Account exists" ){
-        alert("ID or password is not correct")
-      } else {
-        window.location.href = "/main"
-      }
-    })
-  }
-  
+    const classes = useStyles(); 
+    const [userID, setId] = useState("")
+    const [password, setPassword] = useState("")
+    const [confirmPassword, setPassword2] = useState("")
+
+    const handleSubmit = () => {
+        if (document.getElementById('password').value == document.getElementById('confirmPassword').value) {
+            const account = {userID, password}
+            alert("Account successfully created")
+                connection.connect(function(err) {
+                var sql = "INSERT INTO account (userID, password) VALUES (document.getElementById('userID').value,document.getElementById('password').value )";
+                connection.query(sql, function (err, result) {
+                    if (err) throw err;
+                    console.log("1 record inserted");
+                  });
+                })
+        } else {
+            alert("Password does not match")
+        }
+    }
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>        
         <Typography component="h1" variant="h5">
-          Log In
+          Sign Up
         </Typography>
         <form className={classes.form} noValidate onSubmit={handleSubmit}>
           <TextField
@@ -66,7 +73,7 @@ export default function LoginForm(props) {
             name="id"
             autoComplete="Account ID"
             autoFocus 
-            value={Id}
+            value={userID}
             onChange={e => setId(e.target.value)}
           />
           <TextField
@@ -75,13 +82,26 @@ export default function LoginForm(props) {
             required
             fullWidth
             name="password"
+            autoComplete="password"
             label="Password"
             type="password"
             id="password"
-            autoComplete="current-password"
             value={password}
             onChange= {e => setPassword(e.target.value)}
+          />
 
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="confirmPassword"
+            autoComplete="confirmPassword"
+            label="Confirm Password"
+            type="password"
+            id="confirmPassword"
+            value={confirmPassword}
+            onChange= {e => setPassword2(e.target.value)}
           />
           
           <Button
@@ -90,17 +110,18 @@ export default function LoginForm(props) {
             variant="contained"           
             color = "primary"
             className={classes.submit}
-          >
-            Log In
+            >
+            Sign Up
           </Button>
 
           <Button 
-          variant="contained" 
-          color = "primary"
-          fullWidth
-          className={classes.submit}
-          onClick={() => window.location.href=`/signup` }>
-            Sign Up
+            variant="contained" 
+            color = "primary"
+            fullWidth
+            className={classes.submit}
+            onClick={() => window.location.href=`/` }
+            >
+            Back to Log In
           </Button>
 
         </form>
