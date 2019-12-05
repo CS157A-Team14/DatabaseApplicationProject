@@ -1,4 +1,4 @@
-import React, {useState} from 'react'; // useState in React Hooks
+import React, {useState, useEffect} from 'react'; // useState in React Hooks
 import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -39,9 +39,13 @@ export default function SignUpForm(props) {
     const [confirmPassword, setPassword2] = useState("")
 
     const handleSubmit = () => {
-        if (document.getElementById('password').value == document.getElementById('confirmPassword').value) {
+        console.log(userID)
+        if (document.getElementById('password').value == document.getElementById('confirmPassword').value 
+        && document.getElementById('password').value != '') {
             const account = {userID, password}
+            axios.post("/account/add", account)
             alert("Account successfully created")
+            window.location.href = "/search"
         } else {
             alert("Password does not match")
         }
