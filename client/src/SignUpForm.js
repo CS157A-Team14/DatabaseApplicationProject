@@ -6,7 +6,6 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import {makeStyles} from '@material-ui/core/styles';
-import connection from 'mysqlconn';
 
 const useStyles = makeStyles(theme => ({
   '@global': {
@@ -43,13 +42,6 @@ export default function SignUpForm(props) {
         if (document.getElementById('password').value == document.getElementById('confirmPassword').value) {
             const account = {userID, password}
             alert("Account successfully created")
-                connection.connect(function(err) {
-                var sql = "INSERT INTO account (userID, password) VALUES (document.getElementById('userID').value,document.getElementById('password').value )";
-                connection.query(sql, function (err, result) {
-                    if (err) throw err;
-                    console.log("1 record inserted");
-                  });
-                })
         } else {
             alert("Password does not match")
         }
