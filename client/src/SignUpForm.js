@@ -43,9 +43,9 @@ export default function SignUpForm(props) {
         if (document.getElementById('password').value == document.getElementById('confirmPassword').value 
         && document.getElementById('password').value != '') {
             const account = {userID, password}
-            axios.post("/account/add", account)
-            alert("Account successfully created")
-            window.location.href = "/search"
+            axios.post("/account/signup", account).then(response => {
+              alert("Account successfully created")
+            })   
         } else {
             alert("Password does not match")
         }
