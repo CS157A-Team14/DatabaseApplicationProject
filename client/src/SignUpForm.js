@@ -34,22 +34,22 @@ const useStyles = makeStyles(theme => ({
 export default function SignUpForm(props) {
 
     const classes = useStyles(); 
-    const [userID, setId] = useState("")
-    const [password, setPassword] = useState("")
-    const [confirmPassword, setPassword2] = useState("")
+    const [userID, setId] = useState('')
+    const [password, setPassword] = useState('')
+    const [username, setUsername] = useState('')
 
-    const handleSubmit = () => {
-        console.log(userID)
-        if (document.getElementById('password').value == document.getElementById('confirmPassword').value 
-        && document.getElementById('password').value != '') {
-            const account = {userID, password}
-            axios.post("/account/signup", account).then(response => {
-              alert("Account successfully created")
-            })   
+    const handleSubmit = e => {
+      e.preventDefault()
+      const account = {userID, password, username}
+      axios.post("/signup", account).then(response => {
+        if(response.data === "success"){
+          alert("Successfully sign up")
+          window.location.href = "/"
         } else {
-            alert("Password does not match")
+          alert(response.data)
         }
-    }
+      }).catch(e => alert(e.message))
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -91,13 +91,13 @@ export default function SignUpForm(props) {
             margin="normal"
             required
             fullWidth
-            name="confirmPassword"
-            autoComplete="confirmPassword"
-            label="Confirm Password"
-            type="password"
-            id="confirmPassword"
-            value={confirmPassword}
-            onChange= {e => setPassword2(e.target.value)}
+            name="Username"
+            autoComplete="Username"
+            label="Username"
+            type="Username"
+            id="Username"
+            value={username}
+            onChange= {e => setUsername(e.target.value)}
           />
           
           <Button
@@ -106,6 +106,7 @@ export default function SignUpForm(props) {
             variant="contained"           
             color = "primary"
             className={classes.submit}
+            onClick={handleSubmit}
             >
             Sign Up
           </Button>
