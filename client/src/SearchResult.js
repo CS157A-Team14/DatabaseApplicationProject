@@ -11,6 +11,7 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import axios from 'axios';
 
+
 const StyledTableCell = withStyles(theme => ({
     head: {
       backgroundColor: theme.palette.common.black,
@@ -53,11 +54,11 @@ export default function SearchResult(props) {
     }
 
     const classes = useStyles();
-    const getList = () =>  (
+    const getList = () => products.map((products, id) => (
         <TableRow key={1}>
             <StyledTableCell align="center">
                 {
-                'product Name'
+                products.pName
                 }
                 </StyledTableCell>
             <StyledTableCell align="center">
@@ -94,12 +95,13 @@ export default function SearchResult(props) {
             
             </StyledTableCell>
         </TableRow>
-    )
+    ))
+
 
     useEffect(() => {
         if(!products){
             console.log(props);
-            axios.get("/search").then(response => {
+            axios.get("/getitem").then(response => {
                 console.log(response.data)
                 if(response.status === 200){
                     setProducts(response.data)
@@ -107,6 +109,7 @@ export default function SearchResult(props) {
             })
         }
     }, [products])
+
 
     return (
         
